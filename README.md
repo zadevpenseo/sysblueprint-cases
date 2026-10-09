@@ -13,6 +13,7 @@ Koleksi resmi studi kasus perancangan sistem dan arsitektur basis data terverifi
 | `CASE-03` | **Multi-Tenant B2B SaaS Core** | Cloud Software | Isolasi data multitenan berbasis organisasi, kontrol hak akses berbasis peran (RBAC), dan keanggotaan pengguna. | [Buka Kasus](cases/03-multitenant-saas/) |
 | `CASE-04` | **Hospital Patient EMR** | Layanan Kesehatan | Rekam medis pasien terintegrasi, jejak riwayat klinis yang tidak dapat diubah (*immutable clinical logs*), dan audit kepatuhan. | [Buka Kasus](cases/04-hospital-emr/) |
 | `CASE-05` | **On-Demand Ride-Hailing Matchmaking** | Transportasi / Logistik | Mesin status alokasi penugasan pengemudi, pelacakan koordinat perjalanan, dan perhitungan tarif dinamis. | [Buka Kasus](cases/05-ridehailing-matchmaking/) |
+| `CASE-06` | **Enterprise Data Observability & Lineage** | Data Engineering / Analytics | Silsilah data end-to-end, penghitungan blast radius, dan deteksi anomali skema kompatibel Monte Carlo. | [Buka Kasus](cases/06-data-observability-lineage/) |
 
 ---
 

@@ -1,0 +1,63 @@
+{
+  "manifest_version": "1.0.0",
+  "generated_at": "2026-10-09T11:38:00Z",
+  "generator": "SysBlueprint Studio Data Lineage Engine",
+  "schema_context": {
+    "database_name": "analytics_warehouse",
+    "total_tables": 5,
+    "total_relations": 3
+  },
+  "assets": [
+    {
+      "asset_type": "RelationalAsset",
+      "asset_name": "raw_events",
+      "fields": ["id", "source_system", "payload", "checksum", "ingested_at"],
+      "upstream_dependencies": [],
+      "downstream_dependents": ["fct_transactions"]
+    },
+    {
+      "asset_type": "RelationalAsset",
+      "asset_name": "dim_customers",
+      "fields": ["customer_key", "customer_id", "full_name", "tier", "is_active", "updated_at"],
+      "upstream_dependencies": [],
+      "downstream_dependents": ["fct_transactions"]
+    },
+    {
+      "asset_type": "RelationalAsset",
+      "asset_name": "fct_transactions",
+      "fields": ["transaction_key", "raw_event_id", "customer_key", "amount", "transaction_type", "event_timestamp", "created_at"],
+      "upstream_dependencies": ["raw_events", "dim_customers"],
+      "downstream_dependents": []
+    },
+    {
+      "asset_type": "RelationalAsset",
+      "asset_name": "lineage_audit_log",
+      "fields": ["id", "upstream_asset", "downstream_asset", "transformation_job", "records_processed", "status", "executed_at"],
+      "upstream_dependencies": [],
+      "downstream_dependents": []
+    },
+    {
+      "asset_type": "RelationalAsset",
+      "asset_name": "schema_drift_alerts",
+      "fields": ["id", "asset_name", "drift_type", "severity", "blast_radius_score", "detected_at"],
+      "upstream_dependencies": [],
+      "downstream_dependents": []
+    }
+  ],
+  "lineage_edges": [
+    {
+      "source_table": "raw_events",
+      "target_table": "fct_transactions",
+      "foreign_key_column": "raw_event_id",
+      "target_key_column": "id",
+      "relationship_type": "one_to_many"
+    },
+    {
+      "source_table": "dim_customers",
+      "target_table": "fct_transactions",
+      "foreign_key_column": "customer_key",
+      "target_key_column": "customer_key",
+      "relationship_type": "one_to_many"
+    }
+  ]
+}
