@@ -1,0 +1,40 @@
+name: Validate Canonical Architecture Cases
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-schemas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install SQLFluff Linter
+        run: pip install sqlfluff
+
+      - name: Lint SQL Files
+        run: |
+          for sqlfile in cases/*/schema.sql; do
+            echo "Memvalidasi $sqlfile..."
+            sqlfluff lint "$sqlfile" --dialect postgres || exit 1
+          done
+
+      - name: Verify Case Completeness
+        run: |
+          for casedir in cases/*; do
+            echo "Memeriksa kelengkapan $casedir..."
+            test -f "$casedir/schema.sql" || { echo "schema.sql tidak ditemukan di $casedir"; exit 1; }
+            test -f "$casedir/ERD.md" || { echo "ERD.md tidak ditemukan di $casedir"; exit 1; }
+            test -f "$casedir/DATA_DICTIONARY.md" || { echo "DATA_DICTIONARY.md tidak ditemukan di $casedir"; exit 1; }
+            ls "$casedir"/ADR-*.md 1> /dev/null 2>&1 || { echo "ADR tidak ditemukan di $casedir"; exit 1; }
+          done
+          echo "Seluruh 5 studi kasus kanonikal terverifikasi lengkap!"
